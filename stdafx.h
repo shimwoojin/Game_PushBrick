@@ -20,10 +20,10 @@
 #define WINSIZE_Y 720	// 18
 
 #define RECT_SIZE 40
-#define RECT_REALSIZE 30
+#define BRICK_SIZE 30
 #define HORIZEN 19
 #define VERTICAL 33
-#define MOVINGINTERVAL WINSIZE_X / (VERTICAL - 1)
+#define MOVINGINTERVAL (WINSIZE_X / (VERTICAL - 1))
 
 #define RECT_MAKE(x,y,s) {x - s / 2, y - s / 2, x + s / 2, y + s / 2}
 #define RECT_DRAW(rt) Rectangle(hdc, rt.left, rt.top, rt.right, rt.bottom)

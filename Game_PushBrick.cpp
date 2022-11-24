@@ -20,7 +20,7 @@ INT_PTR CALLBACK    About(HWND, UINT, WPARAM, LPARAM);
 //나의 전역 선언
 //=========================================================================
 
-POINT user = { RECT_SIZE / 2, RECT_SIZE / 2};
+POINT user = { RECT_SIZE / 2 + MOVINGINTERVAL, RECT_SIZE / 2 + MOVINGINTERVAL};
 RECT userBox;
 MOVE_DIR user_dir;
 
@@ -194,9 +194,9 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
         Bricks.push_back(makeBrick(10, 10));
         Bricks.push_back(makeBrick(15, 13));
 
-        goalPoint.push_back(makeBrick(31, 15));
-        goalPoint.push_back(makeBrick(31, 16));
-        goalPoint.push_back(makeBrick(31, 17));
+        goalPoint.push_back(makeGoalPoint(20, 15));
+        goalPoint.push_back(makeGoalPoint(29, 1));
+        goalPoint.push_back(makeGoalPoint(30, 1));
     }
     break;
 
@@ -204,7 +204,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
     {
         InvalidateRect(hWnd, NULL, true);
 
-        userBox = RECT_MAKE(user.x, user.y, RECT_REALSIZE);
+        userBox = RECT_MAKE(user.x, user.y, BRICK_SIZE);
 
         int goalCount = 0;
 
@@ -247,17 +247,41 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
         {
             PAINTSTRUCT ps;
             HDC hdc = BeginPaint(hWnd, &ps);
-            // TODO: 여기에 hdc를 사용하는 그리기 코드를 추가합니다...
             
+            // 붓 정의
+            HBRUSH BlackBrush = (HBRUSH)CreateSolidBrush(RGB(0, 0, 0));
+            HBRUSH RedBrush = (HBRUSH)CreateSolidBrush(RGB(0xff, 0, 0));
+            HBRUSH GreenBrush = (HBRUSH)CreateSolidBrush(RGB(0, 0xff, 0));
+            HBRUSH BlueBrush = (HBRUSH)CreateSolidBrush(RGB(0, 0, 0xff));
+
+
+            //1. 맵
             drawMap(hdc, HORIZEN, VERTICAL);
 
-            RECT_DRAW(userBox);
+            
+            HBRUSH oldBrush = (HBRUSH)SelectObject(hdc, BlackBrush);
+            fillMapRectangle(hdc, map);
 
+            //2. Goal
+            (HBRUSH)SelectObject(hdc, GreenBrush);
+            for (const auto& rect : goalPoint)
+                RECT_DRAW(rect);
+
+            //3. Brick
+            (HBRUSH)SelectObject(hdc, BlueBrush);
             for (const auto& rect : Bricks)
                 RECT_DRAW(rect);
 
-            for (const auto& rect : goalPoint)
-                RECT_DRAW(rect);
+            //4. user
+            (HBRUSH)SelectObject(hdc, RedBrush);
+            RECT_DRAW(userBox);
+
+            // 원래 붓 복귀 및 정의한 붓 해제
+            SelectObject(hdc, oldBrush);
+            DeleteObject(BlackBrush);
+            DeleteObject(BlueBrush);
+            DeleteObject(GreenBrush);
+            DeleteObject(RedBrush);
             
             EndPaint(hWnd, &ps);
         }
