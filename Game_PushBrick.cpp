@@ -190,13 +190,30 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 
         srand((unsigned)time(NULL));
 
-        Bricks.push_back(makeBrick(15, 10));
-        Bricks.push_back(makeBrick(10, 10));
-        Bricks.push_back(makeBrick(15, 13));
+        Bricks.push_back(makeBrick(1, 10));
+        Bricks.push_back(makeBrick(2, 8));
+        Bricks.push_back(makeBrick(10, 8));
+        Bricks.push_back(makeBrick(11, 3));
+        Bricks.push_back(makeBrick(12, 3));
+        Bricks.push_back(makeBrick(14, 16));
+        Bricks.push_back(makeBrick(18, 8));
+        Bricks.push_back(makeBrick(19, 9));
+        Bricks.push_back(makeBrick(24, 7));
+        Bricks.push_back(makeBrick(28, 15));
+        Bricks.push_back(makeBrick(30, 14));
 
-        goalPoint.push_back(makeGoalPoint(20, 15));
+        goalPoint.push_back(makeGoalPoint(1  , 14));
+        goalPoint.push_back(makeGoalPoint(2  , 14));
+        goalPoint.push_back(makeGoalPoint(2 , 16));
+        goalPoint.push_back(makeGoalPoint(15 , 8));
+        goalPoint.push_back(makeGoalPoint(21, 13));
+        goalPoint.push_back(makeGoalPoint(27, 1));
+        goalPoint.push_back(makeGoalPoint(27, 2));
+        goalPoint.push_back(makeGoalPoint(22, 13));
+        goalPoint.push_back(makeGoalPoint(27, 4));
         goalPoint.push_back(makeGoalPoint(29, 1));
         goalPoint.push_back(makeGoalPoint(30, 1));
+
     }
     break;
 
@@ -231,7 +248,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
             }
         }
 
-        if (goalCount == Bricks.size())
+        if (goalCount >= Bricks.size())
             exit(1);
 
     }
@@ -257,8 +274,6 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 
             //1. 맵
             drawMap(hdc, HORIZEN, VERTICAL);
-
-            
             HBRUSH oldBrush = (HBRUSH)SelectObject(hdc, BlackBrush);
             fillMapRectangle(hdc, map);
 
@@ -286,24 +301,6 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
             EndPaint(hWnd, &ps);
         }
         break;
-
-    case WM_LBUTTONDOWN:
-    {
-
-    }
-    break;
-
-    case WM_MOUSEMOVE:
-    {
-        
-    }
-    break;
-
-    case WM_LBUTTONUP:
-    {
-
-    }
-    break;
 
     case WM_DESTROY:
         PostQuitMessage(0);

@@ -123,31 +123,33 @@ RECT makeGoalPoint(int left, int top)
 
 void pushBrick(RECT& brick, MOVE_DIR dir)
 {
+	int mapIndexX = (brick.left - (RECT_SIZE - BRICK_SIZE) / 2) / MOVINGINTERVAL;
+	int mapIndexY = (brick.top - (RECT_SIZE - BRICK_SIZE) / 2) / MOVINGINTERVAL;
 	switch (dir)
 	{
 	case MOVE_DIR::UP:
-		if (brick.top - (RECT_SIZE - BRICK_SIZE) / 2 > 0)
+		if (brick.top - (RECT_SIZE - BRICK_SIZE) / 2 > 0 && map[mapIndexY - 1][mapIndexX] == 0)
 		{
 			brick.top -= MOVINGINTERVAL;
 			brick.bottom -= MOVINGINTERVAL;
 		}
 		break;
 	case MOVE_DIR::DOWN:
-		if (brick.bottom + (RECT_SIZE - BRICK_SIZE) / 2 < WINSIZE_Y)
+		if (brick.bottom + (RECT_SIZE - BRICK_SIZE) / 2 < WINSIZE_Y && map[mapIndexY + 1][mapIndexX] == 0)
 		{
 			brick.top += MOVINGINTERVAL;
 			brick.bottom += MOVINGINTERVAL;
 		}
 		break;
 	case MOVE_DIR::LEFT:
-		if (brick.left - (RECT_SIZE - BRICK_SIZE) / 2 > 0)
+		if (brick.left - (RECT_SIZE - BRICK_SIZE) / 2 > 0 && map[mapIndexY][mapIndexX - 1] == 0)
 		{
 			brick.left -= MOVINGINTERVAL;
 			brick.right -= MOVINGINTERVAL;
 		}
 		break;
 	case MOVE_DIR::RIGHT:
-		if (brick.right + (RECT_SIZE - BRICK_SIZE) / 2 < WINSIZE_X)
+		if (brick.right + (RECT_SIZE - BRICK_SIZE) / 2 < WINSIZE_X && map[mapIndexY][mapIndexX + 1] == 0)
 		{
 			brick.left += MOVINGINTERVAL;
 			brick.right += MOVINGINTERVAL;
