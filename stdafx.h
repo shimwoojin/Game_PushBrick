@@ -22,7 +22,7 @@
 #define RECT_SIZE 40
 #define BRICK_SIZE 30
 #define HORIZEN 19
-#define VERTICAL 33
+#define VERTICAL 33 
 #define MOVINGINTERVAL (WINSIZE_X / (VERTICAL - 1))
 
 #define RECT_MAKE(x,y,s) {x - s / 2, y - s / 2, x + s / 2, y + s / 2}
